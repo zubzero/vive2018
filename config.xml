@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.viveenunclick.mx" version="1.7.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.viveenunclick.mx" version="1.7.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Vive En Un Click</name>
     <description>
         Red de negocios
@@ -24,11 +24,11 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
-    <plugin name="cordova-plugin-googlemaps" spec="2.0.0">
-        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBezcuO8jYhYFaelSbKgLBEANYR-1uW_-Q" />
-        <variable name="API_KEY_FOR_IOS" value="AIzaSyDCTVS77zM0c-fJaQILtEmTLzbhSrqeKO8" />
-     </plugin>
+    
     <platform name="android">
+        <plugin name="cordova-plugin-googlemaps" spec="2.0.0">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBezcuO8jYhYFaelSbKgLBEANYR-1uW_-Q" />
+        </plugin>
         <preference name="android-minSdkVersion" value="21" />
         <allow-intent href="market:*" />
         <preference name="SplashScreen" value="/img/splash.jpg" />
@@ -59,6 +59,10 @@
     <preference name="loadUrlTimeoutValue" value="700000" />
     <preference name="SplashScreen" value="screen" />
     <splash src="www/img/splash.jpg" />
+    <plugin name="cordova-plugin-googlemaps" spec="2.0.0">
+        <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBezcuO8jYhYFaelSbKgLBEANYR-1uW_-Q" />
+        <variable name="API_KEY_FOR_IOS" value="AIzaSyDCTVS77zM0c-fJaQILtEmTLzbhSrqeKO8" />
+     </plugin>
     <plugin name="cordova-plugin-geolocation" spec="2.4.3">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value=" " />
     </plugin>
