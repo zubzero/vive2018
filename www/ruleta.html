@@ -1,0 +1,210 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Ruleta de la suerte :: Vive en un Click</title>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <script type="text/javascript" src="ruleta/Winwheel.js"></script>
+        <script src="ruleta/TweenMax.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+        <script src="js/firebase.js"></script>
+        <script type="text/javascript" src="js/sweetalert.min.js"></script>
+        <script type="text/javascript" src="js/php_crud_api_transform.js"></script>
+        <script type="text/javascript" src="js/script.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" href="lib/onsenold/font_awesome/css/font-awesome.css">
+        <link rel="stylesheet" href="registro/estilos.css">
+    </head>
+    <body>
+        <div class="head_onsen">
+            <a onclick="window.location.href='index.html'"><i class="fa fa-home ng-scope" aria-hidden="true"></i> </a><span> Ruleta</span>
+        </div>
+        <div class="center">
+            <br>
+            <img src="ruleta/logo.png" alt="Logo Vive en un click">
+            <p>&nbsp;</p>
+            <h4 style="color:#fff;">Tira la ruleta para ganar una de nuestras excelentes promociones</h4>
+            <br />
+            <div id="ruleta1" class="the_wheel">
+                <img id="spin_button" src="ruleta/button.png" alt="Spin" onClick="startSpin();" />
+                <canvas id="canvas" width="300" height="300">
+                    
+                    <p style="{color: white}" align="center">Sorry, your browser doesn't support canvas. Please try another.</p>
+                </canvas>
+            </div>
+            <div id="the-24h-countdown1"><p></p></div>
+            <div id="the-24h-countdown"><p></p></div>
+        <script>
+            // Create new wheel object specifying the parameters at creation time.
+            var theWheel = new Winwheel({
+                'numSegments'       : 2,         // Specify number of segments.
+                'outerRadius'       : 150,       // Set outer radius so wheel fits inside the background.
+                'drawMode'          : 'image',   // drawMode must be set to image.
+                'drawText'          : true,      // Need to set this true if want code-drawn text on image wheels.
+                'textFontSize'      : 12,        // Set text options as desired.
+                'textOrientation'   : 'curved',
+                'textDirection'     : 'reversed',
+                'textMargin'        : 5,
+                'textLineWidth'     : 2,
+                'textFillStyle'     : '',
+                'segments'     :                // Define segments.
+                [
+                   {'text' : ' Has ganado un cupón 2x1 en bebidas internacionales'},
+                   {'text' : '¡Recibe un 20% de descuento en tu proxima visita al dentista!'}
+                ],
+                'animation' :                   // Specify the animation to use.
+                {
+                    'type'     : 'spinToStop',
+                    'duration' : 5,     // Duration in seconds.
+                    'spins'    : 12,     // Number of complete spins.
+                    'callbackFinished' : 'alertPrize()'
+                }
+            });
+
+            // Create new image object in memory.
+            var loadedImg = new Image();
+
+            // Create callback to execute once the image has finished loading.
+            loadedImg.onload = function()
+            {
+                theWheel.wheelImage = loadedImg;    // Make wheelImage equal the loaded image object.
+                theWheel.draw();                    // Also call draw function to render the wheel.
+            }
+
+            // Set the image source, once complete this will trigger the onLoad callback (above).
+            loadedImg.src = "ruleta/ruleta.png";
+            // Vars used by the code in this page to do power controls.
+            var wheelPower    = 0;
+            var wheelSpinning = false;
+            // -------------------------------------------------------
+            // Click handler for spin button.
+            // -------------------------------------------------------
+            function startSpin()
+            {
+                // Ensure that spinning can't be clicked again while already running.
+                if (wheelSpinning == false)
+                {
+                    // Based on the power level selected adjust the number of spins for the wheel, the more times is has
+                    // to rotate with the duration of the animation the quicker the wheel spins.
+                    if (wheelPower == 1)
+                    {
+                        theWheel.animation.spins = 3;
+                    }
+                    else (wheelPower == 2)
+                    {
+                        theWheel.animation.spins = 6;
+                    };
+                    
+                    // Disable the spin button so can't click again while wheel is spinning.
+                    document.getElementById('spin_button').src       = "ruleta/button_1.png";
+                    document.getElementById('spin_button').className = "";
+                    
+                    // Begin the spin animation by calling startAnimation on the wheel object.
+                    theWheel.startAnimation();
+                    
+                    // Set to true so that power can't be changed and spin button re-enabled during
+                    // the current animation. The user will have to reset before spinning again.
+                    wheelSpinning = true;
+                }
+            }
+            // -------------------------------------------------------
+            // Function for reset button.
+            // -------------------------------------------------------
+            function resetWheel()
+            {
+                theWheel.stopAnimation(false);  // Stop the animation, false as param so does not call callback function.
+                theWheel.rotationAngle = 0;     // Re-set the wheel angle to 0 degrees.
+                theWheel.draw();                // Call draw to render changes to the wheel.
+                wheelSpinning = false;          // Reset to false to power buttons and spin can be clicked again.
+            }
+
+            // -------------------------------------------------------
+            // Called when the spin animation has finished by the callback feature of the wheel because I specified callback in the parameters.
+            // -------------------------------------------------------
+            function alertPrize()
+            {
+                // Get the segment indicated by the pointer on the wheel background which is at 0 degrees.
+                var winningSegment = theWheel.getIndicatedSegment();
+
+                // Do basic alert of the segment text. You would probably want to do something more interesting with this information.
+                // swal("¡Felicidades!, " + winningSegment.text);
+                // Funcion para guardar los cupones
+            $.getJSON('https://viveenunclick.com/api.php/cupones?transform=1&filter=activo,eq,1', function(data) {
+                var myObj, i, x = "";
+                myObj = data;
+                countObjt = myObj.cupones.length;
+                countObjt1 = countObjt - 1;
+                // console.log(myObj.cupones[0].texto);
+                var cupon = Math.round(Math.random()*(countObjt1 - 0));
+                localStorage.cuponTexto = myObj.cupones[cupon].texto;
+                localStorage.cuponId = myObj.cupones[cupon].id_cupon;
+                localStorage.cuponImg = myObj.cupones[cupon].imagen;
+                localStorage.cuponVig = myObj.cupones[cupon].vigencia;
+                console.log(cupon);
+                console.log(myObj.cupones[cupon].texto);
+                for (i = 0; i < myObj.cupones.length; i++) {
+                    x += myObj.cupones[i] + "<br>";
+                }
+                console.log(data);
+                var miObjeto = data;
+                for(var k in data) {
+                   //console.log(k, data[k]);
+                }
+                // Guardo el objeto como un string
+                // localStorage.setItem('datos', JSON.stringify(miObjeto));
+                swal({
+                    title: "¡Ganaste!",
+                    html: "<img style='width:100%; height:auto;' src='" + localStorage.cuponImg + "''>" +
+                        "<p class='cuponWin'>"+ localStorage.cuponTexto +" </p>" +
+                        "<hr>" +
+                        "<span><b>Vigencia:</b> "+ localStorage.cuponVig +"</span>",
+                    confirmButtonColor: "rgb(113, 7, 140)",
+                    confirmButtonText: "<a class='Swalbutton' href='' onclick='guardarCupon();return false;'>Guardar Cupón</a>"
+                });
+            });
+                // localStorage.cuponGuardado = "Se ha guardado tu cupon:" + winningSegment.text;
+                setInterval(function time(){
+                  var d = new Date();
+                  var day = d.getDay();
+                  console.log(day);
+                  localStorage.ruletaJugada = day;
+                  var hours = 24 - d.getHours();
+                  var min = 60 - d.getMinutes();
+                  if((min + '').length == 1){
+                    min = '0' + min;
+                  }
+                  var sec = 60 - d.getSeconds();
+                  if((sec + '').length == 1){
+                        sec = '0' + sec;
+                  }
+                  jQuery('#the-24h-countdown p').html('<span>Vuelve a tirar en:</span><span>'+hours+'</span><span class="min">'+min+'<br></span><span class="seg">'+sec+'</span>')
+                }, 1000);
+            };
+            setInterval(function time(){
+                var rjugada = new Date();
+                var dia = rjugada.getDay();
+                if (localStorage.ruletaJugada == dia){
+                    document.getElementById('ruleta1').style.display ="none";
+                    jQuery('#the-24h-countdown1 p').html('<span>Intenta tirar de nuevo en 24 horas.</span>')
+                }else{
+                    localStorage.removeItem('ruletaJugada');
+                }
+            }, 1000);
+            function guardarCupon(){
+                var Idusuario = localStorage.EmailUsuario;
+                var CuponGanado = localStorage.cuponId;
+                $.ajax({
+                    method: "POST",
+                    url: "https://viveenunclick.com/api.php/cupon_usuario",
+                    data: { id_cupon: CuponGanado, usuario: Idusuario}
+                  })
+                  .done(function( msg ) {
+                    swal({
+                    title: "¡Tu cupón ha sido guardado!",
+                    confirmButtonColor: "rgb(113, 7, 140)",
+                    confirmButtonText: "<a class='Swalbutton' href='index.html'>Ir al inicio para ver cupones</a>"
+                    });
+                });
+            };
+        </script>
+    </body>
+</html>
