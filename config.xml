@@ -28,7 +28,7 @@
         <plugin name="cordova-plugin-googlemaps" spec="2.0.0">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyBezcuO8jYhYFaelSbKgLBEANYR-1uW_-Q" />
         </plugin>
-        <preference name="android-minSdkVersion" value="21" />
+        <preference name="android-minSdkVersion" value="22" />
         <allow-intent href="market:*" />
         <preference name="SplashScreen" value="/img/splash.jpg" />
         <preference name="SplashMaintainAspectRatio" value="true" />
