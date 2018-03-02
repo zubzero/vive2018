@@ -101,14 +101,14 @@
       }
       //Función para recoger los datos del formulario y enviarlos por post  
        //recogemos los valores de los inputs
-       var nom = document.getElementById('nombre').value;
-       var ape = document.getElementById('apellido').value;
-       var nacimiento = document.getElementById('nacimiento').value;
-       var email = document.getElementById('email').value;
-       var contrasena = '******'; //document.registro.contrasena.value
-        localStorage.NombreUsuario = nom;
-        localStorage.ApellidosUsuario = ape;
-        localStorage.NacimientoUsuario = nacimiento;
+       // var nom = document.getElementById('nombre').value;
+       // var ape = document.getElementById('apellido').value;
+       // var nacimiento = document.getElementById('nacimiento').value;
+       // var email = document.getElementById('email').value;
+       // var contrasena = '******';
+        // localStorage.NombreUsuario = nom;
+        // localStorage.ApellidosUsuario = ape;
+        // localStorage.NacimientoUsuario = nacimiento;
           $.ajax({
             method: "POST",
             url: "https://viveenunclick.com/api.php/usuarios",
@@ -223,13 +223,17 @@
 </head>
 <body>
   <div class="head_onsen">
-    <a onclick="window.location.href='../index.html'"><i class="fa fa-home ng-scope" aria-hidden="true"></i> </a><span> Registrarme</span>
+    <a onclick="window.location.href='../index.html'"><i class="fa fa-home ng-scope" aria-hidden="true"></i> </a><span> Acceder</span>
   </div>
   <div class="contenedor-formularios">
+
     <div class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header">
+      <h3>Si aún no te has registrado da <a href="index.html">click aquí.</a></h3>
+      <br>
       <h3>Llena el siguiente formulario para que podamos otorgarte tus cupones, puntos y promociones que tenemos para ti.</h3>
         <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
           <p>&nbsp;</p>
+
             <div class="form-row">
               <input class="text-input--underbar width-full" type="text" id="email" name="email" placeholder="Email"/>
             </div>
@@ -249,6 +253,7 @@
             <div class="quickstart-user-details-container">
               Estatus: <span id="quickstart-sign-in-status">Desconocido</span>
             </div>
+            <div id="output"></div>
         </div>
   </div>
   </div>
@@ -257,6 +262,7 @@
 <script src="../js/angular.js"></script>
 <script type="text/javascript" src="../lib/onsenold/jquery.js"></script>
 <script type="text/javascript" src="../js/sweetalert.min.js"></script>
+<script type="text/JavaScript" src="../js/php_crud_api_transform.js"></script>
 <script type="text/JavaScript" src="../js/script.js"></script>
 <script type="text/javascript">
     var user = firebase.auth().currentUser;
@@ -266,7 +272,7 @@
             // Handler for .ready() called.
             window.setTimeout(function () {
                 location.href = "../index.html";
-            }, 3000);
+            }, 1800);
         });
         user.providerData.forEach(function (profile) {
           localStorage.EmailUsuario = profile.email;

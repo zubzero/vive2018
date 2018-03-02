@@ -23,7 +23,8 @@
             <img src="ruleta/logo.png" alt="Logo Vive en un click">
             <p>&nbsp;</p>
             <h4 style="color:#fff;">Tira la ruleta para ganar una de nuestras excelentes promociones</h4>
-            <br />
+            <small style="color: yellow">20 puntos por tirar la ruleta</small>
+            <br /><br>
             <div id="ruleta1" class="the_wheel">
                 <img id="spin_button" src="ruleta/button.png" alt="Spin" onClick="startSpin();" />
                 <canvas id="canvas" width="300" height="300">
@@ -33,7 +34,14 @@
             </div>
             <div id="the-24h-countdown1"><p></p></div>
             <div id="the-24h-countdown"><p></p></div>
+            <div class="footer_ruleta">
+                <p>Hola <span id="nombre"></span>!, Tienes <span id="puntos_usuario"></span> puntos.</p>
+            </div>
         <script>
+            var usuario1 = localStorage.NombreUsuario;
+            var puntos1 = localStorage.PuntosUsuario;
+            document.getElementById('nombre').textContent = usuario1;
+            document.getElementById('puntos_usuario').textContent = puntos1;
             // Create new wheel object specifying the parameters at creation time.
             var theWheel = new Winwheel({
                 'numSegments'       : 2,         // Specify number of segments.
@@ -105,6 +113,22 @@
                     // the current animation. The user will have to reset before spinning again.
                     wheelSpinning = true;
                 }
+                var puntos1 = localStorage.PuntosUsuario;
+                var usuarioID = localStorage.getItem("MSGUsuario");
+                var email1 = localStorage.getItem("EmailUsuario");
+                var usuarioNombre = localStorage.getItem("NombreUsuario");
+                var usuarioFecha = localStorage.getItem("NacimientoUsuario");
+                var usuarioApellidos = localStorage.getItem("ApellidosUsuario");
+                var usuarioTimestamp = Date.now();
+                var puntos2 = puntos1 - 20;
+                document.getElementById('puntos_usuario').textContent = puntos2;
+                $.ajax({
+                    method: "PUT",
+                    url: "https://viveenunclick.com/api.php/usuarios/"+usuarioID,
+                    data: {puntos:puntos2}
+                }).done(function( msg ) {
+                    localStorage.PuntosUsuario = puntos2;
+                });
             }
             // -------------------------------------------------------
             // Function for reset button.
@@ -205,6 +229,24 @@
                     });
                 });
             };
+            var user = firebase.auth().currentUser;
+            firebase.auth().onAuthStateChanged(function(user) {
+              if (!user) {
+                $(document).ready(function () {
+                    // Handler for .ready() called.
+                    window.setTimeout(function () {
+                        alert('Aún no estas registrado, si ya lo estas accede para poder participar.');
+                        location.href = "registro/index.html";
+                    }, 3000);
+
+                });
+                user.providerData.forEach(function (profile) {
+                  localStorage.EmailUsuario = profile.email;
+                });
+              } else {
+                // No user is signed in.
+              }
+            });
         </script>
     </body>
 </html>

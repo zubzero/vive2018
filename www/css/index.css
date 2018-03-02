@@ -610,23 +610,23 @@ input[type=submit],#quickstart-password-reset, #quickstart-sign-in, #quickstart-
 .head_onsen span{font-weight: bold; font-size: 17px; color: white; text-transform: uppercase;}
 .cupon_page .page__background{background: #6b6b6b}
 /*  GRID OF TWO  */
-.span_2_of_2 {
+.cupon_page .span_2_of_2 {
   width: 100%;
 }
-.span_1_of_2 {
+.cupon_page .span_1_of_2 {
   width: 49.2%;
 }
-.span_1_of_2 img{width: 100%;height: auto;}
+.cupon_page .span_1_of_2 img{width: 100%;height: auto;}
 /*  SECTIONS  */
-.section {
+.cupon_page .section {
   clear: both;
   padding: 0px;
   margin: 0px;
 }
-.texto_cupon i{font-size: small}
+.cupon_page .texto_cupon i{font-size: small}
 
 /*  COLUMN SETUP  */
-.col {
+.cupon_page .col {
   display: block;
   float:left;
   margin: 1% 0 1% 1.6%;
@@ -634,19 +634,67 @@ input[type=submit],#quickstart-password-reset, #quickstart-sign-in, #quickstart-
   padding: 15px;
   border-radius: 5px;
 }
-.col:first-child { margin-left: 0; }
+.cupon_page .col:first-child { margin-left: 0; }
 
 /*  GROUPING  */
-.group:before,
-.group:after { content:""; display:table; }
-.group:after { clear:both;}
-.group { zoom:1; /* For IE 6/7 */ }
+.cupon_page .group:before,
+.cupon_page .group:after { content:""; display:table; }
+.cupon_page .group:after { clear:both;}
+.cupon_page .group { zoom:1; /* For IE 6/7 */ }
 /*  GO FULL WIDTH AT LESS THAN 480 PIXELS */
 @media only screen and (max-width: 480px) {
-  .col { 
+  .cupon_page .col { 
     margin: 1% 0 1% 0%;
   }
 }
 @media only screen and (max-width: 480px) {
-  .span_2_of_2, .span_1_of_2 { width: 100%; }
+  .cupon_page .span_2_of_2, .cupon_page .span_1_of_2 { width: 100%; }
 }
+.ruleta_categoria{
+      background: #50015e;
+    height: 40px;
+    width: 100%;
+    padding: 6px 0;
+    position: relative;
+    top: -6px;
+    text-align: center;
+}
+.ruleta_categoria a{
+  color: #fff;
+  text-decoration: none;
+}
+.icono_ruleta1{position: relative;top:6px;}
+.icono_ruleta{
+  width: 25px !important;
+  height: auto !important;
+  position: absolute;
+  top: 100px;
+  right: 20px;
+}
+.footer_ruleta{
+  background: #fff;
+  height: 80px;
+  width: 80%;
+  margin:0 auto;
+  position: relative;
+  -webkit-box-shadow: -1px 5px 13px 2px rgba(0, 0, 0, 0.72);
+  box-shadow: -1px 5px 13px 2px rgba(0, 0, 0, 0.72);
+  border-bottom: 5px solid #00b7b7;
+  display: table;
+  border-radius: 5px 5px 0 0;
+}
+.footer_ruleta p{
+  display: table-cell;
+  vertical-align: middle;
+  font-size: 14px;
+  padding: 10px 0;
+}
+#puntos_usuario{
+  background-color: #00b7b7;
+  color: #fff;
+  font-weight: 700;
+  letter-spacing: 1px;
+  border-radius: 15px;
+  padding: 7px;
+}
+#nombre{font-weight: 700;}
