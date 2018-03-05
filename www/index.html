@@ -90,7 +90,7 @@
       
     });
     app.controller("homeCtl", function($scope, position, $http){
-      $scope.version = "1.9";
+      $scope.version = "2.0";
       $http.get('https://viveenunclick.com/api.php/bannerportada?order=orden,asc', {cache: true}).success(function (data, status, headers, config) {
       $scope.banner = php_crud_api_transform(data);
       }).error(function (data, status, headers, config) {});
@@ -181,12 +181,37 @@
       }).error(function(data, status, headers, config) {});
       $http.get('https://viveenunclick.com/api.php/cupones?transform=1', {cache: true}).
       success(function(data, status, headers, config) {
-        $scope.bdcupon = data;
+        $scope.bdcupon = data;       
       }).error(function(data, status, headers, config) {});
       $scope.tomarelemento = function (elemento) {
         idnew = elemento;
       };
+      $scope.getRandom = function (elemento) {
+        idcup = elemento;
+        console.log(idcup);
+        var randomfolio = Math.floor(Math.random() * 9056);
+        swal({
+        title: 'Tu folio es',
+        type: 'success',
+        html: '<h1>VEUC-'+randomfolio+
+          '</h1>'+
+          '<h4>Una vez canjeado el cupón sera borrado de tu perfil.</h4>',
+        confirmButtonText:
+          '<a class="boton_canjear" href="" onclick="borrarCupon(idcup);return false;">Canjear Ahora</a>',
+        confirmButtonAriaLabel: 'Canjeado',
+        });
+        
+      };
     });
+    function borrarCupon(elemento){
+          idcup = elemento;
+          $.ajax({
+              method: "DELETE",
+              url: "https://viveenunclick.com/api.php/cupon_usuario/"+idcup
+          }).done(function( msg ) {
+            swal("Cupón usado");
+          });
+        };
     app.controller("DetalleCtl", function($scope, position, $http, $rootScope) {
       $http.get('https://viveenunclick.com/api.php/clientes/'+idnew, {cache: true}).
       success(function(data, status, headers, config) {
@@ -220,15 +245,16 @@
       };
     });
     function exitFromApp(){
-            if (navigator.app) {
-                navigator.app.exitApp();
-            } else if (navigator.device) {
-                navigator.device.exitApp();
-            } else {
-                window.close();
-            }
-        };
+       if (navigator.app) {
+        navigator.app.exitApp();
+      } else if (navigator.device) {
+        navigator.device.exitApp();
+      } else {
+        window.close();
+      }
+    };
 
+    
     app.controller("ListaCtl", function($scope, $timeout, position) {
       $(function() {
           $.getJSON("https://viveenunclick.com/api.php/clientes?transform=1", function (data) {
@@ -342,6 +368,7 @@
                     <span class="texto_cupon" ng-repeat="cupon in bdcupon.cupones|filter:{id_cupon : usuarioA.id_cupon}">
                       <img ng-src="{{cupon.imagen}}" alt="{{cupon.texto}}">
                       <p>{{cupon.texto}}</p>
+                      <ons-button class="boton_folio" ng-click="getRandom(usuarioA.id);">CANJEAR</ons-button>
                       <i><b>Vigencia:</b> {{cupon.vigencia}}</i></span>
                     </div>
                   </div>

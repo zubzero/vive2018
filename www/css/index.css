@@ -616,6 +616,9 @@ input[type=submit],#quickstart-password-reset, #quickstart-sign-in, #quickstart-
 .cupon_page .span_1_of_2 {
   width: 49.2%;
 }
+.cupon_page .span_1_of_2:last-of-type {
+ margin-bottom: 60px;
+}
 .cupon_page .span_1_of_2 img{width: 100%;height: auto;}
 /*  SECTIONS  */
 .cupon_page .section {
@@ -698,3 +701,4 @@ input[type=submit],#quickstart-password-reset, #quickstart-sign-in, #quickstart-
   padding: 7px;
 }
 #nombre{font-weight: 700;}
+.boton_canjear{text-decoration: none; color: white; font-weight: bold;}
